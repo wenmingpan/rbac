@@ -54,7 +54,11 @@
     </tr>
     <tr>
         <td class="tableleft">角色</td>
-        <td></td>
+        <td>
+			{foreach name="$role" item="vo"}
+					<input type="checkbox" name="role_id[]" value="{$vo.id}" />{$vo.name}<br>
+			{/foreach}
+		</td>
     </tr>
     <tr>
         <td class="tableleft"></td>
