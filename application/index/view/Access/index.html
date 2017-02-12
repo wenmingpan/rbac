@@ -45,14 +45,16 @@
         <th>操作</th>
     </tr>
     </thead>
-	     <tr>
-            <td>222</td>
-            <td>222</td>
-            <td>222</td>
+        {foreach $list as $vo}
+	<tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.title}</td>
+            <td>{$vo.status}</td>
             <td>
-                  <a href="edit.html">编辑</a>
+                  <a href="/index.php/index/access/edit/id/{$vo.id}">编辑</a>
             </td>
         </tr>
+        {/foreach}
 </table>
 		</body>
 		</html>

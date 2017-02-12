@@ -12,7 +12,8 @@ use app\index\model\UserModel;
  *
  * @author Administrator
  */
-class User extends Controller
+//class User extends Controller
+class User extends Base
 {
     public function index()
     {
@@ -130,7 +131,7 @@ class User extends Controller
             }
         } else { // 无值进行添加
             foreach ($role_ids as $key => $value) {
-                if (!in_array($value, $result)) {
+                if (!in_array($value, $user_roleid)) {
                     $data1 = ['uid' => $userid, 'role_id' => $value, 'created_time'=> time()];
                     Db::table('user_role')->insert($data1);
                 }

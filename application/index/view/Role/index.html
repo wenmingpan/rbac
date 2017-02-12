@@ -47,16 +47,16 @@
         <th>操作</th>
     </tr>
     </thead>
-		{foreach $list as $vo} 
-	     <tr>
+	{foreach $list as $vo} 
+	<tr>
             <td>{$vo.id}</td>
             <td>{$vo.name}</td>
             <td>{$vo.status}</td>
             <td>
-                  <a href="edit.html">编辑</a>
+                  <a href="/index/role/edit/id/{$vo.id}">编辑</a>
             </td>
         </tr>
-		{/foreach}
+        {/foreach}
 </table>
 		</body>
 		</html>
