@@ -47,14 +47,6 @@
             </td>
         </tr>
         <tr>
-            <td class="tableleft">权限</td>
-            <td>
-                {foreach $list as $vo}
-                <input type="checkbox" name="access_id[]" value="{$vo.id}" />{$vo.title}
-                {/foreach}
-            </td>
-        </tr>
-        <tr>
             <td class="tableleft"></td>
             <td>
                 <button type="submit" class="btn btn-primary" type="button">保存</button> &nbsp;&nbsp;<button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>

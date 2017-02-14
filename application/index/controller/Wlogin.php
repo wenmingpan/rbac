@@ -25,12 +25,13 @@ class Wlogin extends Controller{
         $params = Request::instance()->param();
             // 修改用户数据
         $userid = $params['userid'];
-        
+//        p($userid);exit;
         // 查询用户
         $user = Db::table('user')->where(['id' => $userid, 'status'=>1])->find();
         
         if ($user) {
             Session::set('useid', $user['id']);
+            Session::set('is_admin', $user['is_admin']);
             Session::set('username', $user['name']);
             
             $this->success('登录成功', '/');

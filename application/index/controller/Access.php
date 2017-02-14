@@ -17,13 +17,16 @@ use think\Db;
  *
  * @author Administrator
  */
-class Access extends Controller{
+//class Access extends Controller{
+class Access extends Base{
     //put your code here
     
     
     public function index()
     {
-        $list = Db::table('access')->select();
+        $list = Db::table('access')->field(['id','title','pid','status'])->select();
+        $list = node_merge($list);
+//        p($list);exit;
         $this->assign('list',$list);
 
         return $this->fetch('index');
@@ -34,10 +37,16 @@ class Access extends Controller{
         // 添加入库
         if (Request::instance()->isPost()) {
             $params = Request::instance()->param();
+//            p($params);exit;
             $title = $params['title'];
             $status = $params['status'];
-            $urls = $params['urls'];
-            $urls = explode("\r\n", $urls);
+            $pid = isset($params['pid']) ? $params['pid']:0;
+            $urls = isset($params['urls']) ? $params['urls']:'';
+            if($urls){
+                $urls = explode("\r\n", $urls);
+                $urls =  json_encode($urls);
+            }
+            
             
             $res = Db::table('access')->where('title',$title)->find();
             if ($res) {
@@ -45,7 +54,8 @@ class Access extends Controller{
             }
             $data = ['title' => $title,
                     'status' => $status,
-                    'urls' => json_encode($urls),
+                    'urls' => $urls,
+                    'pid' => $pid,
                     'created_time' => time(),
                     'updated_time' => time(),
                 ];
@@ -100,5 +110,14 @@ class Access extends Controller{
                 $this->error('修改失败');
             }
         }
+    }
+    
+    public function addaction()
+    {
+        $params = Request::instance()->param();
+        $pid = $params['pid'];
+//        p($params);exit;
+        $this->assign('pid',$pid);
+        return $this->fetch('addaction');
     }
 }

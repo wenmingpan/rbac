@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/Css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/static/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="/static/Css/style.css" />
-    <script type="text/javascript" src="/static/Js/jquery.js"></script>
+    <script type="text/javascript" src="/static/Js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/Js/jquery.sorted.js"></script>
     <script type="text/javascript" src="/static/Js/bootstrap.js"></script>
     <script type="text/javascript" src="/static/Js/ckform.js"></script>
@@ -53,7 +53,8 @@
             <td>{$vo.name}</td>
             <td>{$vo.status}</td>
             <td>
-                  <a href="/index/role/edit/id/{$vo.id}">编辑</a>
+                  <a href="/index.php/index/role/edit/id/{$vo.id}">编辑</a>
+                  <a href="/index.php/index/role/addaccess/id/{$vo.id}">配置权限</a>
             </td>
         </tr>
         {/foreach}

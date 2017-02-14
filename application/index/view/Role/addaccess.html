@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/Css/bootstrap_1.css" />
     <link rel="stylesheet" type="text/css" href="/static/Css/bootstrap-responsive.css" />
     <link rel="stylesheet" type="text/css" href="/static/Css/style.css" />
-    <script type="text/javascript" src="/static/Js/jquery.js"></script>
+    <script type="text/javascript" src="/static/Js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/Js/jquery.sorted.js"></script>
     <script type="text/javascript" src="/static/Js/bootstrap.js"></script>
     <script type="text/javascript" src="/static/Js/ckform.js"></script>
@@ -34,7 +34,7 @@
 </head>
 <body>
 <form class="form-inline definewidth m20" action="" method="get">  
-<button type="button" class="btn btn-success" id="addnew">添加权限</button>
+<button type="button" class="btn btn-success" id="addnew">返回</button>
 </form>
 <!--<table class="table table-bordered table-hover definewidth m10" >
     <thead>
@@ -57,24 +57,30 @@
         </tr>
         {/foreach}
 </table>-->
-		{foreach $list as $vo}
-		<dl class="dl-horizontal" style='border:1px solid #eef;'>
-		<dt>{$vo.title}<dt>
-			<dd>
-				<a href="/index.php/index/access/edit/id/{$vo.id}">编辑</a>|
-				<a href="/index.php/index/access/addaction/pid/{$vo.id}">添加操作</a>
-			</dd>
+		<div class="row">
+			<form action="index.php/role/" method="post">
 			
+			{foreach $list as $vo}
+			<dl class="dl-horizontal" style='border:1px solid #eef;'>
+			<dt>{$vo.title}<dt>
+				<dd>
+					<input type="checkbox" name="access_id[]" level="1" >
+				</dd>
 			<ul class="list-unstyled list-inline" style="margin-left: 120px;">
-				{foreach $vo['child'] as $v}
-				<li>{$v.title}<a href="/index.php/index/access/edit/id/{$v.id}">编辑</a></li>
-				{/foreach}
-			 </ul>
+					{foreach $vo['child'] as $v}
+					<li>
+						{$v.title} <input type="checkbox" name="access_id[]" value="{$v.id}" 
+										  {in name="v.id" value="$user_access_id"}checked{/in} />
+					</li>
+					{/foreach}
+			</ul>
+			</dl>
 			
-			
-		</dl>
-		{/foreach}
-		
+			{/foreach}
+			<input type="hidden" name="role_id" value="{$role_id}">
+			<button type="submit" class="btn btn-primary col-md-offset-1" type="button">保存</button>
+			</form>
+		</div>
 		</body>
 		</html>
 
@@ -83,7 +89,15 @@
         
 		$('#addnew').click(function(){
 
-				window.location.href="/index.php/index/access/add";
+				window.location.href="/index.php/index/role";
+		 });
+		 
+		 $("input[level='1']").click(function(){
+			 var inputs = $(this).parents('dl').find('input');
+			 console.log($(this).attr('checked'))
+			 $(this).attr('checked') ? inputs.attr('checked', 'checked'):inputs.removeAttr('checked');
+//					 inputs.attr('checked', 'checked');
+//					 inputs.removeAttr('checked');
 		 });
 
 

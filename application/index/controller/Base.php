@@ -27,6 +27,10 @@ class Base extends Controller{
     {
        // 判断是否登录
        $userid = Session::get('useid');
+       $is_admin = Session::get('is_admin');
+       if($is_admin) {
+           return true;
+       }
        if ($userid) {
             // 取出用户角色
             $role_ids = Db::table('user_role')->where(['uid'=>$userid])->column('role_id');

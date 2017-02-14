@@ -49,15 +49,6 @@
                 {eq name="role.status" value='0'}checked{/eq} /> 禁用
             </td>
         </tr>
-        <tr>
-            <td class="tableleft">权限</td>
-            <td>
-                {foreach $access as $vo}
-                <input type="checkbox" name="access_id[]" value="{$vo.id}" 
-                       {in name="vo.id" value="$user_access_id"}checked{/in}/>{$vo.title}
-                {/foreach}
-            </td>
-        </tr>
     <tr>
         <td class="tableleft"></td>
         <td>
@@ -75,7 +66,7 @@
         });
 
 		$('#backid').click(function(){
-				window.location.href="/index/role";
+				window.location.href="/index.php/index/role";
 		 });
 
     });

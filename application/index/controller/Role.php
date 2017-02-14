@@ -10,7 +10,8 @@ use think\Db;
  *
  * @author Administrator
  */
-class Role extends Controller
+//class Role extends Controller
+class Role extends Base
 {
     public function index()
     {
@@ -41,18 +42,17 @@ class Role extends Controller
                     'updated_time' => time(),
                 ];
             $res = Db::table('role')->insert($data);
-            $role_id = Db::table('role')->getLastInsID();
             if($res) {
                 // role_access 关系
-                $this->_setRoleAccess($role_id, $access_id);
+//                $this->_setRoleAccess($role_id, $access_id);
                 $this->success('新增成功', 'Role/index');
             } else{
                 $this->error('新增失败');
             }
         }
         
-        $access = Db::table('access')->select();
-        $this->assign('list',$access);
+//        $access = Db::table('access')->select();
+//        $this->assign('list',$access);
         return view('add');
     }
     
@@ -63,13 +63,13 @@ class Role extends Controller
             $params = Request::instance()->param();
             $role = Db::table('role')->where('id',$params['id'])->find();
             // 权限
-            $access = Db::table('access')->select();
+//            $access = Db::table('access')->select();
             // role_id 查询access_id
             $access_user = Db::table('role_access')->where('role_id', $params['id'])->select();
             $user_access_id = array_column($access_user, 'access_id');
             
             $this->assign('role',$role); // 角色名称
-            $this->assign('access',$access); // 所有权限
+//            $this->assign('access',$access); // 所有权限
             $this->assign('user_access_id',$user_access_id); // 用户权限ID
             
             return $this->fetch('edit');
@@ -95,8 +95,50 @@ class Role extends Controller
                     ->where('id', $id)
                     ->update($data);
             // 设置用户角色关系
-            $this->_setRoleAccess($id, $access_id);
+//            $this->_setRoleAccess($id, $access_id);
             if($updat_user) {
+                $this->success('修改成功', 'role/index');
+            } else{
+                $this->error('修改失败');
+            }
+        }
+    }
+    
+    /**
+     *  配置权限
+     */
+    public function addaccess()
+    {
+        if (Request::instance()->isGet()) {
+            $params = Request::instance()->param();
+//            p($params);
+            $this->assign('role_id',$params['id']); // 角色名称
+
+            // 所有权限
+            $list = Db::table('access')->field(['id','title','pid','status'])->select();
+            $list = node_merge($list);
+            // 用户权限
+            $access_user = Db::table('role_access')->where('role_id', $params['id'])->select();
+            $user_access_id = array_column($access_user, 'access_id');
+            $this->assign('user_access_id',$user_access_id); // 用户权限ID
+//            p($user_access_id);exit;
+            $this->assign('list',$list);
+            return $this->fetch('addaccess');
+        }
+        
+        if (Request::instance()->isPost()) {
+            $params = Request::instance()->param();
+            $role_id = $params['role_id'];
+            $access_id = empty($params['access_id']) ? array(): $params['access_id']; // 角色id
+            foreach($access_id as $k=>$v) {
+                if ($v == 'on') {
+                    unset($access_id[$k]);
+                }
+            }
+            
+            // 设置用户角色关系
+            $res = $this->_setRoleAccess($role_id, $access_id);
+            if($res) {
                 $this->success('修改成功', 'role/index');
             } else{
                 $this->error('修改失败');
@@ -132,5 +174,6 @@ class Role extends Controller
                 }
             }
         }
+        return true;
     }
 }

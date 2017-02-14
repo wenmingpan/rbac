@@ -36,7 +36,7 @@
 <form action="/index.php/index/access/add" method="post" class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10">
         <tr>
-            <td width="10%" class="tableleft">控制器名称</td>
+            <td width="10%" class="tableleft">名称</td>
             <td><input type="text" name="title"/></td>
         </tr>
         <tr>
@@ -45,16 +45,16 @@
                 <input type="radio" name="status" value="1" checked/> 启用  <input type="radio" name="status" value="0"/> 禁用
             </td>
         </tr>
-<!--        <tr>
+        <tr>
             <td class="tableleft">权限路径</td>
             <td>
                 <textarea class="form-control" rows="4" placeholder="添加多个进行换行" name="urls"></textarea>
             </td>
-        </tr>-->
+        </tr>
         <tr>
             <td class="tableleft"></td>
             <td>
-				<input type="hidden" name="pid" value="0">
+				<input type="hidden" name="pid" value="{$pid}">
                 <button type="submit" class="btn btn-primary" type="button">保存</button> &nbsp;&nbsp;<button type="button" class="btn btn-success" name="backid" id="backid">返回列表</button>
             </td>
         </tr>
