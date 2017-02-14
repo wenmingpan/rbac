@@ -32,28 +32,39 @@ class Base extends Controller{
            return true;
        }
        if ($userid) {
-            // 取出用户角色
-            $role_ids = Db::table('user_role')->where(['uid'=>$userid])->column('role_id');
-            $role_ids = implode(',', $role_ids);
-            // 取出角色对应的权限
-            $access_ids = Db::table('role_access')->where('role_id','in',$role_ids)->column('access_id');
-            $access_ids = implode(',', $access_ids);
-            // 权限ID 查询权限urls
-            $urls = Db::table('access')->where('id','in',$access_ids)->column('urls');
-//            p($urls);
-            $access = array();
-            foreach ($urls as $value) {
-                $arr = json_decode($value);
-                $access = array_merge($access, $arr);
+            // 取出用户角色权限urls
+            $access = Session::get('access');
+            if(!$access) {
+                $access = $this->_getUserAccess($userid);
             }
             // User/edit
             $action = strtolower(CONTROLLER_NAME.'/'.ACTION_NAME);
-            
             if (!in_array($action, $access)) {
                 $this->error('没有权限');
             }
 
-           
        }
     }
+    
+    /**
+     * 获取用户权限列表
+     * @param type $userid
+     */
+    private function _getUserAccess($userid)
+    {
+        // 获取用户角色的权限id
+        $res = Db::query("select u.uid,u.role_id,r.access_id from user_role as u left join role_access as r on u.role_id=r.role_id where u.uid={$userid}");
+        $user_access_id = array_column($res, 'access_id');
+        $access_ids = implode(',', $user_access_id);
+        // 权限ID 查询权限urls
+        $urls = Db::table('access')->where('id','in',$access_ids)->column('urls');
+        $access = array();
+        foreach ($urls as $value) {
+            $arr = json_decode($value);
+            $access = array_merge($access, $arr);
+        }
+        Session::set('access',$access);
+        return $access;
+    }
+        
 }
