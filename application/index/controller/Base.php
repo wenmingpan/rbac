@@ -36,13 +36,13 @@ class Base extends Controller{
             $access = Session::get('access');
             if(!$access) {
                 $access = $this->_getUserAccess($userid);
+                Session::set('access',$access);
             }
             // User/edit
             $action = strtolower(CONTROLLER_NAME.'/'.ACTION_NAME);
             if (!in_array($action, $access)) {
                 $this->error('没有权限');
             }
-
        }
     }
     
@@ -63,7 +63,6 @@ class Base extends Controller{
             $arr = json_decode($value);
             $access = array_merge($access, $arr);
         }
-        Session::set('access',$access);
         return $access;
     }
         
